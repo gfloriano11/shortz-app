@@ -9,8 +9,6 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-const sequelize = require('./configuration/database.js');
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -40,9 +38,13 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-sequelize.authenticate()
-  .then(() => console.log("Database Connection was established."))
-  .catch((error) => console.error("It wasn't possible to connect to your database", error));
+const sequelize = require('./configuration/database.js');
+const User = require('./modules/users/user.js');
+sequelize.sync({ alter: true });
+
+// sequelize.authenticate()
+//   .then(() => console.log("Database Connection was established."))
+//   .catch((error) => console.error("It wasn't possible to connect to your database", error));
 
 module.exports = app;
 
