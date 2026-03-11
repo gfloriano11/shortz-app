@@ -1,12 +1,34 @@
 var express = require('express');
 var router = express.Router();
+const userController = require('../modules/users/userController');
+const authMiddleware = require('../middlewares/auth');
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+// Rota para a página inicial 
+router.get('/', function (req, res, next) {
+   res.render('index', { title: 'Vídeos Curtos e Engajadores' });
 });
 
-router.get('/register', function(req, res, next) {
-  res.render('register');
+// Rota para exibir o formulário de cadastro
+router.get('/register', (req, res) => {
+   res.render('register', { title: 'Criar Conta' });
+});
+
+// Rota que processa o formulário de cadastro
+router.post('/register', userController.register);
+
+// Rota para exibir o formulário de login
+router.get('/login', (req, res) => {
+   res.render('login', { title: 'Entrar' });
+});
+
+router.post('/login', userController.login);
+
+// Rota para processar o logout
+router.get('/logout', userController.logout);
+
+// Rota para exibir o feed de vídeos (protegida por autenticação)
+router.get('/feed', authMiddleware, (req, res) => {
+   res.render('home', { user: req.session.user });
 });
 
 module.exports = router;
