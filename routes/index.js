@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const userController = require('../modules/users/userController');
 const authMiddleware = require('../middlewares/auth');
+const upload = require('../middlewares/multer');
 
 // Rota para a página inicial 
 router.get('/', function (req, res, next) {
@@ -38,5 +39,7 @@ router.get('/profile/edit', authMiddleware, async (req, res) => {
     res.render('edit-profile', { user });
 });
 
+// Rota de atualização (Protegida + Upload de 1 arquivo chamado 'profilePicture')
+router.post('/profile/edit', authMiddleware, upload.single('profilePicture'), userController.updateProfile);
 
 module.exports = router;
