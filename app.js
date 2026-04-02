@@ -7,15 +7,15 @@ const session = require('express-session');
 const flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var userRouter = require('./modules/users/userRoutes');
+var videoRoutes = require("./modules/video/videoRoutes");
 
 var app = express();
 var expressLayouts = require("express-ejs-layouts");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views/pages'));
-app.set('layouts', path.join(__dirname, 'views/layouts/main'));
+app.set('layout', path.join(__dirname, 'views/layouts/main'));
 app.use(expressLayouts)
 app.set('view engine', 'ejs');
 
@@ -29,7 +29,7 @@ app.use(session({
   cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 dia
 }));
 app.use(flash());
-app.use((req, res, next) => { 
+app.use((req, res, next) => {
   res.locals.messages = req.flash();
   res.locals.user = req.session.user || null;
   next();
@@ -39,8 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/', userRouter)
-// app.use('/users', usersRouter);
-
+app.use("/", videoRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -62,6 +61,8 @@ const sequelize = require('./configuration/database');
 // Importa o modelo User para sincronização
 const user = require('./modules/users/userModel');
 // Sincroniza o modelo com o banco de dados
+const Video = require("./modules/video/videoModel");
+
 sequelize.sync({ alter: true })
     .then(() => console.log('Banco de dados sincronizado!'))
     .catch(err => console.error('Erro ao sincronizar banco:', err));

@@ -111,8 +111,8 @@ exports.updateProfile = async (req, res) => {
 		
 		await User.update(updateData, { where: { id: userId } });
 
-		if (req.file && oldUser.profilePicture && oldUser.profilePicture !== 'default-profile.png') {
-			const oldProfilePicPath= path.join(_dirname, '../../public/uploads/profiles', oldUser.profilePicture);
+		if (req.file && user.profilePicture && user.profilePicture !== 'default-profile.png') {
+			const oldProfilePicPath= path.join(_dirname, '../../public/uploads/profiles', user.profilePicture);
 			fs.unlink(oldProfilePicPath, (err) => {
 				if (err) console.error('Erro ao apagar foto de perfil antiga:', err);
 				else console.log('Foto de perfil antiga apagada:', oldProfilePicPath);
