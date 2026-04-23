@@ -19,10 +19,10 @@ router.post("/login", userController.login);
 // Rota para processar o logout
 router.get("/logout", userController.logout);
 // Rota para exibir o feed de vídeos (protegida por autenticação)
-router.get("/feed", authMiddleware, async (req, res) => {
-  // 0 objeto 'user' já está disponível via res.locals.user
-  res.render("feed", {title: "Feed | Shortz-App" });
-});
+// router.get("/feed", authMiddleware, async (req, res) => {
+//   // 0 objeto 'user' já está disponível via res.locals.user
+//   res.render("feed", {title: "Feed | Shortz-App" });
+// });
 // Rota para exibir o perfil do usuário (protegida por autenticação)
 router.get("/profile/edit", authMiddleware, async (req, res) => {
   // O objeto 'user' já está disponível via res.locals.user
