@@ -59,12 +59,10 @@ app.use(function(err, req, res, next) {
 });
 
 const sequelize = require('./configuration/database');
-const User = require("./modules/users/userModel");
-const Video = require("./modules/video/videoModel");
 // Sincroniza os modelos com o banco de dados
 sequelize.sync({ alter: true })
-.then(() => console.log("Banco de dados sincronizado!"))
-.catch(err => console.error("Erro ao sincronizar banco:", err));
+  .then(() => console.log("Banco de dados sincronizado!"))
+  .catch(err => console.error("Erro ao sincronizar banco:", err));
 
 // sequelize.authenticate()
 //   .then(() => console.log("Database Connection was established."))

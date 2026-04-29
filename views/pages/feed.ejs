@@ -17,23 +17,29 @@
               <div class="col-6 col-md-4 col-lg-3">
                 <div class="video-card">
                   <a href="/video/<%= video.id %>">
-                    <div class="thumbnail-placeholder"></div>
-                    <img src="/public/uploads/covers/<%= video.thumbnailPath %>">
+                    <div class="thumbnail-placeholder">
+                      <img src="/uploads/covers/<%= video.thumbnailPath %>" alt="<%= video.title %> thumbnail" class="img-fluid">
+                    </div>
                     <i class="bi bi-play-circle play-icon"></i>
                     <span class="badge-views"><i class="bi bi-eye"></i>
                       <%= video.views %>
                     </span>
+                  </a>
                 </div>
-                </a>
                 <div class="p-3">
-                  <h6 class="text-truncate mb-1"><a href="/video/<%= video.id %>"
-                      class="text-decoration-none text-dark">
+                  <h6 class="text-truncate mb-1">
+                    <a href="/video/<%= video.id %>" class="text-decoration-none text-dark">
                       <%= video.title %>
-                    </a></h6>
+                    </a>
+                  </h6>
                   <div class="d-flex align-items-center">
-                    <img src="<%= video.User.profilePicture ?
-'/uploads/profiles/' + video.User.profilePicture :
-'/images/default-profile.png' %>" alt="<%= video.User.username %>" class="rounded-circle me-2" width="24" height="24">
+                    <img src="<%= video.User.profilePicture 
+                      ? '/uploads/profiles/' + video.User.profilePicture 
+                      : '/images/default-profile.png' %>" 
+                      alt="<%= video.User.username %>" class
+                      ="rounded-circle me-2"
+                      width="24" height="24"
+                    >
                     <span class="text-muted small">@<%= video.User.username %></span>
                   </div>
                 </div>
@@ -53,7 +59,4 @@
     <button class="btn btn-outline-primary px-5 rounded-pill fw-bold">Carregar mais vídeos</button>
   </div>
   </main>
-</div>
-</div>
-</div>
 </div>
