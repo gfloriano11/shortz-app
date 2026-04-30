@@ -1,4 +1,5 @@
 const User = require('./userModel');
+const Video = require('../video/videoModel');
 const bcrypt = require('bcryptjs');
 const fs = require("fs");
 const path = require("path");
@@ -108,17 +109,17 @@ exports.updateProfile = async (req, res) => {
 		}
 
 		const user = await User.findByPk(userId);
-		
+
 		await User.update(updateData, { where: { id: userId } });
 
 		if (req.file && user.profilePicture && user.profilePicture !== 'default-profile.png') {
-			const oldProfilePicPath= path.join(_dirname, '../../public/uploads/profiles', user.profilePicture);
+			const oldProfilePicPath = path.join(_dirname, '../../public/uploads/profiles', user.profilePicture);
 			fs.unlink(oldProfilePicPath, (err) => {
 				if (err) console.error('Erro ao apagar foto de perfil antiga:', err);
 				else console.log('Foto de perfil antiga apagada:', oldProfilePicPath);
 			});
 		}
-		
+
 		req.flash("success", "Perfil atualizado com sucesso.");
 		res.redirect('/profile/edit');
 
@@ -126,5 +127,35 @@ exports.updateProfile = async (req, res) => {
 		console.error(error)
 		req.flash('error', 'Erro ao atualizar perfil.');
 		res.redirect('/profile/edit');
+	}
+};
+
+exports.renderPublicProfile = async (req, res) => {
+	try {
+		const username = req.params.username;
+		const user = await User.findOne({
+			where: { username },
+			include: [{
+				model: Video,
+				attributes: ["id", "title", "thumbnailPath", "views"],
+				order: [["createdAt", "DESC"]]
+			}],
+			attributes: ["id", "username", "fullName", "bio", "profilePicture", "followersCount", "followingCount", "videosCount"]
+		});
+
+		if (!user) {
+			req.flash("error", "Usuário não encontrado.");
+			return res.redirect("/feed");
+		}
+
+		// Verifica se o perfil sendo visualizado é o do usuário logado
+		const isOwner = req.session.user && req.session.user.id === user.id;
+
+		res.render("profile", { title: `@${user.username} | Shortz-App`, profileUser: user, isOwner });
+
+	} catch (error) {
+		console.error("Erro ao carregar perfil público:", error);
+		req.flash("error", "Erro ao carregar o perfil. Tente novamente.");
+		res.redirect("/feed");
 	}
 };
