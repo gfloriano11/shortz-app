@@ -57,7 +57,7 @@
         <h5 class="mb-3">Comentários (<span id="commentsCountDisplay">
             <%= video.commentsCount %>
           </span>)</h5>
-        <% if (user) { %>
+        <% if (typeof user !== 'undefined' && user) { %>
           <div class="card mb-3">
             <div class="card-body">
               <h6 class="card-title">Adicionar um comentário</h6>
