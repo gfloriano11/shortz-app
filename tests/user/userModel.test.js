@@ -16,27 +16,27 @@ describe("User Model", () => {
     })
 
     expect(user.username).toBe("gfloriano");
-  })
+  });
 
   it("should receive a valid e-mail address", () => {
     const user = new User({
       username: "gfloriano",
       email: "gflorianodev@gmail.com",
       password: "vitest"
-    })
+    });
 
     expect(user.email).not.toBeNull();
     expect(user.email).not.toBeUndefined();
     expect(user.email).toContain("@");
     expect(user.email).toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-  })
+  });
 
   it("should receive a valid password", () => {
       const user = new User({
       username: "gfloriano",
       email: "gflorianodev@gmail.com",
       password: "vitest"
-    })
+    });
 
     expect(user.password.length).toBeGreaterThanOrEqual(6);
   })
