@@ -13,8 +13,7 @@ exports.uploadVideo = async (req, res) => {
 
     if (title === undefined || title === null || (typeof title === "string" && !title.trim())) {
       req.flash("error", "Por favor, adicione o título no vídeo.")
-      res.status(400);
-      return res.redirect("/upload");
+      return res.status(400).json({ message: "Por favor, adicione o título no vídeo." });
     }
 
     // Verifica se os arquivos foram enviados

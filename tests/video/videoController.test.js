@@ -37,7 +37,7 @@ describe("Create video", () => {
     };
 
     await videoController.uploadVideo(req, res);
-
+    
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
