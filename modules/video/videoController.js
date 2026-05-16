@@ -11,9 +11,16 @@ exports.uploadVideo = async (req, res) => {
     const { title, description } = req.body;
     const userId = req.session.user.id;
 
+    if (title === undefined || title === null || (typeof title === "string" && !title.trim())) {
+      req.flash("error", "Por favor, adicione o título no vídeo.")
+      res.status(400);
+      return res.redirect("/upload");
+    }
+
     // Verifica se os arquivos foram enviados
     if (!req.files || !req.files.video || !req.files.thumbnail) {
       req.flash("error", "Por favor, envie o vídeo e a capa.");
+      res.status(400);
       return res.redirect("/upload");
     }
 
