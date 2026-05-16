@@ -12,7 +12,7 @@ describe("Create or toggle like", () => {
         user: {
           id: 1,
         }
-      }
+      },
     };
 
     const res = {

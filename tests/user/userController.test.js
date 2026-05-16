@@ -1,37 +1,28 @@
 import { describe, expect, it, vi } from "vitest";
+import * as userController from "../../modules/users/userController";
+require("../../configuration/associations");
 
 describe("Register", () => {
-  const password = "myPassword";
-  const confirmPassword = "myPassword";
-  const fullname = "aaaaa";
-  const email = "gustavo@gmail.com";
+  it("should register user and redirect to login", async () => {
+    const req = {
+      body: {
+        username: "meu nome",
+        email: "meuemail@gmail.com",
+        password: "meupass",
+        confirmPassword: "meupass",
+        fullName: "gustavo"
+      },
+      flash: vi.fn(),
+    };
 
-  it("password should exists", () => {
-    expect(password).not.toBeNull();
-    expect(password).not.toBeUndefined();
-    expect(password).not.toBeFalsy();
-  });
+    const res = {
+      status: vi.fn().mockReturnThis(),
+      json: vi.fn(),
+      redirect: vi.fn(),
+    };
 
-  it("password confirmation should exists", () => {
-    expect(confirmPassword).not.toBeNull();
-    expect(confirmPassword).not.toBeUndefined();
-    expect(confirmPassword).not.toBeFalsy();
-  });
+    await userController.register(req, res);
 
-  it("both password should be equal", () => {
-    expect(password).toBe(confirmPassword);
-  });
-
-  it("user should have fullname", () => {
-    expect(fullname).not.toBeNull();
-    expect(fullname).not.toBeUndefined();
-    expect(fullname).not.toBeFalsy();
-    expect(fullname).toBeTypeOf("string");
-  });
-
-  it("user should have email", () => {
-    expect(email).not.toBeNull();
-    expect(email).not.toBeUndefined();
-    expect(email).not.toBeFalsy();
-  });
+    expect(res.redirect).toHaveBeenCalledWith("/login");
+  })
 });
