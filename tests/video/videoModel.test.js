@@ -17,4 +17,15 @@ describe("Video Model", () => {
 
     expect(video.title).toBe("My Video")
   });
+
+  it("should update video title", async () => {
+    const video = await Video.findOne({
+      where: { id: 1 }
+    })
+
+    video.title = "Video atualizado";
+    await Video.update(video, { where: { id: 1 }});
+
+    expect(video.title).toBe("Video atualizado");
+  });
 });

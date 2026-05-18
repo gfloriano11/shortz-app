@@ -3,7 +3,7 @@ import * as likeController from "../../modules/like/likeController";
 require("../../configuration/associations");
 
 describe("Create or toggle like", () => {
-  it("should create if a like", async () => {
+  it("should create a like and returns 200 if like don't exists", async () => {
     const req = {
       params: {
         videoId: 1,
@@ -26,7 +26,7 @@ describe("Create or toggle like", () => {
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it("shoud toogle a like", async () => {
+  it("shoud toogle a like and returns 201 if like exists", async () => {
     const req = {
       params: {
         videoId: 1,
