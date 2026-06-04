@@ -1,7 +1,8 @@
 const userService = require("./userService");
 const videoService = require("../video/videoService");
+const asyncHandler = require("../../middlewares/asyncHandler");
 
-exports.register = async (req, res) => {
+exports.register = asyncHandler(async (req, res) => {
 	const { username, email, password, confirmPassword, fullName } = req.body;
 	try {
 		if (password !== confirmPassword) {
@@ -16,9 +17,9 @@ exports.register = async (req, res) => {
 		req.flash("error", error.message || "Erro ao criar conta. Verifique os dados e tente novamente.");
 		res.redirect("/register");
 	}
-};
+});
 
-exports.login = async (req, res) => {
+exports.login = asyncHandler(async (req, res) => {
 	try {
 		const { login, password } = req.body;
 		const user = await userService.loginUser(login, password);
@@ -30,7 +31,7 @@ exports.login = async (req, res) => {
 		req.flash("error", error.message || "Ocorreu um erro ao tentar entrar.");
 		res.redirect("/login");
 	}
-};
+});
 
 exports.logout = (req, res) => {
 	req.session.destroy(() => {
@@ -47,7 +48,7 @@ exports.getProfile = async (userId) => {
 	}
 };
 
-exports.updateProfile = async (req, res) => {
+exports.updateProfile = asyncHandler(async (req, res) => {
 	try {
 		const { fullName, bio } = req.body;
 		const userId = req.session.user.id;
@@ -61,7 +62,7 @@ exports.updateProfile = async (req, res) => {
 		req.flash("error", error.message || "Erro ao atualizar perfil.");
 		res.redirect("/profile/edit");
 	}
-};
+});
 
 exports.renderPublicProfile = async (req, res) => {
 	try {
@@ -84,7 +85,7 @@ exports.renderLoginForm = (req, res) => {
 	res.render("login", { title: "Entrar" });
 };
 
-exports.renderFeed = async (req, res) => {
+exports.renderFeed = asyncHandler(async (req, res) => {
 	try {
 		const videos = await videoService.getAllVideos();
 		res.render("feed", { title: "Feed | Shortz-App", videos });
@@ -93,7 +94,8 @@ exports.renderFeed = async (req, res) => {
 		req.flash("error", "Erro ao carregar o feed de vídeos.");
 		res.redirect("/login");
 	}
-};
+});
+
 exports.renderEditProfileForm = async (req, res) => {
 	res.render("edit-profile", { title: "Editar Perfil | Shortz-App" });
 }
