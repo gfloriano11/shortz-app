@@ -1,6 +1,7 @@
 const videoService = require("./videoService");
 const fs = require("fs");
 const path = require("path");
+const asyncHandler = require("../../middlewares/asyncHandler");
 
 exports.uploadVideo = asyncHandler(async (req, res) => {
   const { title, description } = req.body;

@@ -11,7 +11,7 @@ const asyncHandler = require("../../middlewares/asyncHandler");
 // Rota para exibir o formulário de upload de vídeo (protegida por autenticação)
 router.get("/upload", isAuthenticated, asyncHandler(videoController.renderUploadPage));
 // Rota para processar o upload de vídeo (protegida por autenticação)
-router.post("/upload", isAuthenticated, uploadVideo.fields([
+router.post("/upload", isAuthenticated, videoMulter.fields([
   { name: "video", maxCount: 1 },
   { name: "thumbnail", maxCount: 1 },
 ]), asyncHandler(videoController.uploadVideo));
