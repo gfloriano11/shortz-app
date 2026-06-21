@@ -64,8 +64,10 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-
-const sequelize = require('./configuration/database');
+const sequelize =
+  process.env.NODE_ENV === "test"
+    ? require("./tests/database")
+    : require("./configuration/database");
 // Sincroniza os modelos com o banco de dados
 sequelize.sync({ alter: true })
   .then(() => console.log("Banco de dados sincronizado!"))
